@@ -1,5 +1,13 @@
 var URLParameterSentValue = function() {
-	this.evaluate = function() {
+	this.evaluate = function(context) {
+		var exchange;
+		if(this.req) {
+			exchange = this.req.getLastExchange();
+		} else {
+			exchange = context.getCurrentRequest().getLastExchange();
+		}
+
+
 		var exchange = this.req.getLastExchange();
 		var params = {};
 		var url = exchange.requestUrl;
@@ -34,7 +42,12 @@ var URLParameterSentValue = function() {
 	}
 
 	this.text = function(context) {
-		return this.req.name + " ➤ " + this.param;
+		if(this.req) {
+			return this.req.name + " ➤ " + this.param;
+		}
+		else {
+			return this.param;
+		}
 	}
 }
 
